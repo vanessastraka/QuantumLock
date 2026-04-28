@@ -91,9 +91,9 @@ class SimpleHammingCoder:
 # TRY IT OUT!
 my_bits = [1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0] # 11 bits
 coder = SimpleHammingCoder(my_bits)
-safe_block = coder.encode()
+send_block = coder.encode()
 # need a copy because of how memory gets handled so the states get mixed up
-received_block = list(safe_block)
+received_block = list(send_block)
 
 # break index 7 manually
 received_block[7] = 1 - received_block[7]

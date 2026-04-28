@@ -5,6 +5,14 @@ Correction + Double Error Detection).
 It’s important to note that any corruption involving three or 
 more bits is beyond the mathematical scope of this code and 
 will result in random error locations.
+
+I started with this as an entry into the "Linear Codes" and "PQC"
+world. Showing the basics of error correction in an easy way.
+So we are using logic to find errors after that it is about 
+the connection to "Linear Codes" and "PQC". And the conncetion
+is Matrices. Before we are using Matrices we manually broke
+bits to test the system but in PQC the breaking of the bits
+is part of the encryption.
 ## Hamming Code By Hand
 This logic is based on the first steps used when 
 learning Hamming codes on paper. It treats the 16-bit block
