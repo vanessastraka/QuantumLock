@@ -13,14 +13,16 @@ the connection to "Linear Codes" and "PQC". And the conncetion
 is Matrices. Before we are using Matrices we manually broke
 bits to test the system but in PQC the breaking of the bits
 is part of the encryption.
-## Hamming Code By Hand
+
+Efficiency 11/16 = 68,75% (actual data)
+## By Hand
 This logic is based on the first steps used when 
 learning Hamming codes on paper. It treats the 16-bit block
 as a 4x4 grid and identifies errors by comparing specific 
 columns and rows. By checking if the sum of certain areas
 is even or uneven, you can manually pinpoint an error at a
 specific section.
-## Haming Code "Binary XOR"
+## Binary XOR
 This implementation evolves the manual logic into a more 
 efficient programmatic form. Instead of hard-coding rows and
 columns, it uses the binary representation of the bit indices
@@ -30,7 +32,24 @@ This achieves the exact same result as the column/row checks
 but in a much more compact way. It highlights how the 
 binary "address" of a bit actually determines which parity 
 bits it contributes to.
-## Base Source
+## Matrix
+In martix form the concept can be even be more compact and powerful.
+We still have the data bits and the parity bits that are getting calculated
+using XOR now with martix operations and the basic of multiplication being
+the "logical AND" and addition representing the "logical XOR".
+
+Generator Matrix G maps messages to a higher dimensional codeword.
+
+If Parity-Check Matrix H acts on valid codeword we get zero vector as output.
+## Source
 [Hamming Code by Hand](https://www.youtube.com/watch?v=X8jsijhllIA)
 
-[Haming Code "Binary XOR"](https://www.youtube.com/watch?v=b3NxrZOu_CE)
+[Hamming Code "Binary XOR"](https://www.youtube.com/watch?v=b3NxrZOu_CE)
+
+[Hamming Code "Binary XOR" (Additional Explanation)](https://www.ece.unb.ca/tervo/ee4253/hamming.shtml)
+
+[Hamming Code by Matrix](https://www.youtube.com/watch?v=eixCGqdlGxQ&list=PLJHszsWbB6hqkOyFCQOAlQtfzC1G9sf2_&index=1)
+
+[Hamming Code by Matrix (Additional Explanation)](https://www.ece.unb.ca/tervo/ee4253/hamming2.shtml)
+
+[Hamming Code by Matrix (Code Inspiration)](https://github.com/christiansiegel/coding-theory-algorithms/blob/master/LinearBlockCode.py)
