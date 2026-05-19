@@ -1,4 +1,5 @@
 # HAMMING CODE (15, 11)
+# Extended (16,11)
 #-----------------------------------------------------------------------------------------------------------------------
 import numpy as np
 import binaryHelper
@@ -47,6 +48,7 @@ class MatrixHammingCoder:
         Generator Matrix G => creating G
         transform a dimensional space into another dimensional space
         G =[I (11x11),P (11x4)]
+        Extended => G =[I (11x11),P (11x5)]
 
         2^15 = 32.768 possible 15-bit vectors
         2^11 = 2.048 of them are valid codewords
@@ -58,6 +60,22 @@ class MatrixHammingCoder:
 
         G = np.hstack((I, self.parity))
         print(f"G: \n{G}\n")
+
+        print("Extended Matrix G\n")
+        print("G =[I,P,EP]\n")
+        EP = (np.empty([11, 1]))
+
+        for i in range(len(G)):
+            w = sum([[x != 0].count(True) for x in G[i]])
+            if w % 2 == 0:
+                EP[i] = 0
+            else:
+                EP[i] = 1
+
+        print(f"Extended Parity Bits:\nSet to one if not even in the row.\n{EP}\n");
+        G = np.hstack((G, EP))
+
+        print(f"Extended G:\n{G}\n")
 
         return G
 
@@ -84,8 +102,14 @@ class MatrixHammingCoder:
         get Matrix to check c for errors
 
         H = [P^T (4x11), I(4x4)]
+
+        Extended H
+        extra column at the end => 0s
+        extra row at the end => 1s
+        H = [P^TE (5x11), IE(5x5)]
+
         """
-        print("Start Creation Generator Matrix G\n")
+        print("Start Creation Parity-Check Matrix H\n")
         print("H =[P^T,I]\n")
         p_t = np.transpose(self.parity)
         print(f"Transposed Parity Matrix: \n{p_t}\n")
@@ -94,6 +118,17 @@ class MatrixHammingCoder:
         H = np.hstack((p_t, I))
         print(f"H: \n{H}\n")
 
+        print("Extended Parity-Check Matrix H\n")
+        ones_row = [1] * 11
+        p_t_e = np.vstack([p_t, ones_row])
+        IE = np.identity(5)
+
+        zw = np.hstack((p_t_e, IE))
+        zw[4] = [1] * 16
+        H = zw
+
+        print(f"Extended H:\n{H}\n");
+
         return H
 
     def check(self, H, c):
@@ -101,24 +136,47 @@ class MatrixHammingCoder:
         print("Check Codeword\n")
         print("0 = H*c^T\n")
 
+        print(f"Codeword:\n{c}\n")
         #ERROR!
-        c[1] = 1
+        #c[1] = 1 - c[1]
+        #c[4] = 1 - c[4]
+        #c[11] = 1 - c[11] # error in parity bit
+        #c[15] = 1 - c[15] # error in master parity bit
+        print(f"Error Codeword:\n{c}\n")
 
         c_t = np.transpose(c)
         dot_product = np.dot(H, c_t)
         c_check = dot_product % 2
 
-        if np.any(c_check):
-            print(f"Codeword contains one error!\n")
-            print(f"Error: \n{c_check}\n")
-            error_binary_position = "".join(str(int(num)) for num in c_check)
-            print(f"Syndrome: \n{error_binary_position}\n")
-            error_m_position = binaryHelper.get_m_index_from_binary_index(binaryHelper.to_decimal(error_binary_position))
-            print(f"Error-Message-Index position: \n{error_m_position}\n")
-            return error_m_position
+        # Split 5-bit check vector for std syndrome and master parity for double error detection
+        standard_syndrome_bits = c_check[0:4]
+        master_parity = c_check[4]
+
+        print(f"Master Parity: {master_parity}")
+        print(f"{standard_syndrome_bits} = \n{H}\n*\n{c_t[:, None]}\n")
+
+        if np.any(standard_syndrome_bits):
+            if master_parity == 1:
+                print("Codeword contains one error!\n")
+                print(f"Error: \n{standard_syndrome_bits}\n")
+                error_binary_position = "".join(str(int(num)) for num in standard_syndrome_bits)
+                print(f"Syndrome: \n{error_binary_position}\n")
+                try:
+                    error_m_position = binaryHelper.get_m_index_from_binary_index(binaryHelper.to_decimal(error_binary_position))
+                    print(f"Error-Message-Index position: \n{error_m_position}\n")
+                except: # if broken bit is parity bit so index 1,2,4,8 => are in the codeword index 11 - 14
+                    print("Codeword contains error in parity bits!\n")
+                return binaryHelper.to_decimal(error_binary_position)
+            else:
+                print("Codeword does contain double error! No fix possible!\n")
+                return -1
         else:
-            print(f"Codeword does not contain error!\n")
-            return 0
+            if master_parity == 1:
+                print(f"Master Parity Bit is broken!\n")
+                return 15
+            else:
+                print(f"Codeword does not contain error!\n")
+                return 0
 
     def decode(self, index, c):
         """
@@ -127,9 +185,9 @@ class MatrixHammingCoder:
         """
         print("Decode Message")
 
-        if index != 0:
+        if index > 0:
             c[index] = 1 - c[index]
-            print(f"Singel error is fixed at position {index}\n")
+            print(f"Single error is fixed at position {index}\n")
 
         m = c[0:11]
         message = "".join(str(int(num)) for num in m)
