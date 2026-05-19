@@ -19,7 +19,7 @@ def get_m_index_from_binary_index(binary_index):
         12: 7,
         13: 8,
         14: 9,
-        15: 10
+        15: 10,
     }
 
     return index_map[binary_index]
