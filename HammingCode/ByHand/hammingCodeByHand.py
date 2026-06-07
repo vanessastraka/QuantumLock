@@ -11,8 +11,21 @@ class SimpleHammingCoder:
 
         # prepare 16-bit block (i 0-15)
         self.block = [0] * 16
-        # the indices we can fill with data
-        data_indices = [3, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15]
+
+        print("\n---------------------Message---------------------\n")
+        print(f"Message: {message_bits}")
+        for x in range(len(message_bits)):
+            print(f"Bit in m at index {x}: {message_bits[x]}")
+            x+=1
+
+        print(f"\nPreparation. Block is: {self.block}")
+
+        # the indices we can fill with data = NOT a power of 2 (3, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15)
+        # i = 3 => (3&(3-1)) => binary => 0011 & 0010 => 0010 != 0
+        # i = 4 => (4&(4-1)) => binary => 0100 & 0011 => 0000 = 0 (power of two)
+        data_indices = [i for i in range(3, 16) if (i & (i - 1)) != 0]
+        print(f"Data Indices in the Codeblock that are the Message bits. Indices: {data_indices}")
+
         for i, bit in enumerate(message_bits):
             self.block[data_indices[i]] = bit
 
@@ -29,7 +42,7 @@ class SimpleHammingCoder:
 
     def encode(self):
         """Set Parity Bits => setting parity bits and special bit"""
-        print("Phase 1: Setting Parity Bits (Q1-Q4)")
+        print("---------------------Phase 1: Setting Parity Bits (Q1-Q4)---------------------\n")
 
         COL2 = [5, 9, 13]
         COL3 = [6, 10, 14]
