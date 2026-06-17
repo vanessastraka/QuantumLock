@@ -21,6 +21,7 @@ class BinaryHammingCoder:
         for i, bit in enumerate(message_bits):
             self.block[data_indices[i]] = bit
 
+        print("\n---------------------Message---------------------\n")
         print(f"Data is set and ready to go. Block is: {self.block}\n")
 
     def to_bin(self, n):
@@ -29,7 +30,7 @@ class BinaryHammingCoder:
 
     def encode(self):
         """Set Parity Bits => setting parity bits and special bit"""
-        print("Phase 1: Setting Parity Bits (Q1-Q4)")
+        print("---------------------Phase 1: Setting Parity Bits (Q1-Q4)---------------------")
 
         ones_indices = [i for i, bit in enumerate(self.block) if bit == 1]
         print(f"Indices containing a '1': {ones_indices}")
@@ -57,7 +58,7 @@ class BinaryHammingCoder:
                 print(f"  > Parity bit {p} is left on 0")
         print("  => we want 0000")
 
-        print("\nPhase 2: Setting Special Bit (Index 0)")
+        print("\n---------------------Phase 2: Setting Special Bit (Index 0)---------------------")
         self.block[0] = sum(self.block[1:]) % 2
         print(f"Index 0 checks indices 1-15 uneven/even? -> Index 0 becomes: {self.block[0]}")
 
@@ -79,7 +80,7 @@ class BinaryHammingCoder:
         is_overall_even = sum(received_block) % 2 == 0
 
         if syndrome == 0:
-            smart_print("\nPhase 3: Verifying Received Block")
+            smart_print("\n---------------------Phase 3: Verifying Received Block---------------------")
             print(f"Overall Block Parity: {'Even' if is_overall_even else 'Odd'}\n")
             if is_overall_even:
                 smart_print("Result: Clean!")
@@ -91,20 +92,20 @@ class BinaryHammingCoder:
                 return 1
         else:
             if not is_overall_even:
-                smart_print("\nPhase 3: Verifying Received Block")
+                smart_print("\n---------------------Phase 3: Verifying Received Block---------------------")
                 smart_print(f"Overall Block Parity: Odd\n")
                 smart_print(f"Result: Single error at {syndrome}!")
                 smart_print(f"Block: {received_block}")
                 return 2
             else:
-                smart_print("\nPhase 3: Verifying Received Block")
+                smart_print("\n---------------------Phase 3: Verifying Received Block---------------------")
                 smart_print(f"Overall Block Parity: Even\n")
                 smart_print("Result: DOUBLE ERROR! (Can't fix sorry)")
                 return 3
 
     def correct(self, received_block, syndrome):
         """Correct code block => correct broken code"""
-        print(f"\nPhase 4: Correcting")
+        print(f"\n---------------------Phase 4: Correcting---------------------")
         received_block[syndrome] = 1 - received_block[syndrome]
         print(f"Corrected Block: {received_block}")
 
@@ -119,8 +120,11 @@ class BinaryHammingCoder:
         # flip current bit
         block[current_index] = 1 - block[current_index]
 
-        # is syndrom 0?
+        # Calculate syndrome state
         syndrome = self.verify(block, False)
+
+        # tested index in decimal + binary + result state
+        print(f"Testing flip at Index {current_index:2d} ({self.to_bin(current_index)}) -> Verify State: {syndrome}")
 
         if syndrome == 0:
             print(f"Success! Brute force single found the error at index: {current_index}")

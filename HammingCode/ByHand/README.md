@@ -33,7 +33,7 @@ If we arrange our 16-bit array into a 4x4 grid, it looks like this:
 | Row 3 | Index 8 (Q4)   | Index 9 (Data)   | Index 10 (Data)   | Index 11 (Data)   |
 | Row 4 | Index 12 (Data)   | Index 13 (Data)   | Index 14 (Data)   | Index 15 (Data)   |
 
-## Encoding
+## Encoding (Phase 1)
 To calculate the values of our parity bits, we ask 4 specific questions about the columns and rows of our grid. If the sum of the data bits in these zones is odd, the parity bit turns into a 1 to force the sum to be even.
 * **Q1** guards Columns 2 and 4: It checks indices ```[5, 9, 13]``` and ```[3, 7, 11, 15]```
 * **Q2** guards Columns 3 and 4: It checks indices ```[6, 10, 14]``` and ```[3, 7, 11, 15]```
@@ -51,7 +51,7 @@ self.block[8] = self.calculate_q_bit(ROW3 + ROW4, "Q4")
 is_uneven = sum(bits) % 2 != 0
 return 1 if is_uneven else 0
 ```
-### Special Parity Bit - Index 0
+### Special Parity Bit - Index 0 (Phase 2)
 Once Q1 - Q4 are calculated, we look at Index 0. 
 This is our Special Parity Bit. 
 It runs a parity check over the entire block (indices 1 through 15). 
@@ -62,7 +62,7 @@ total_data_sum = sum(self.block[1:])
 # check if uneven and add 1 if so
 self.block[0] = 1 if total_data_sum % 2 != 0 else 0
 ```
-## Finding Error
+## Finding Error / Verification (Phase 3)
 When a block is received, we run the exact same column and row checks again. 
 We calculate a **Syndrome** value by adding up the failed checks:
 
