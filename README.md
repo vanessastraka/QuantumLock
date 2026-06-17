@@ -30,6 +30,12 @@ This is the study of encoding information into different symbols.
 (Difference to Cryptography: In coding theory, we ignore the question of who has access to the code and how secret it may be. Instead, one of our primary concerns becomes our ability to detect and correct errors in the code).
 ### What is linear codes?
 A type of error-correcting code where codewords are formed as linear combinations of message bits (typically vectors over a finite field). A linear combination of codewords is also a codeword.
+### SECDEC (Single Error Correction, Double Error Detection)
+Now if two bits get corrupted during transmission, it can't point to two errors. This is where the Extended part of the Hamming code comes in.
+
+If the Syndrome says there is an error, AND Index 0 (Special bit) says the overall parity is ODD. It is a  single Error. We know where it is, and we can fix it.
+
+If the Syndrome says there is an error, BUT Index 0 (Special bit) says the overall parity is STILL EVEN: DOUBLE ERROR DETECTED! Two errors flipped the bits in a way that tricked the grid into pointing to a random single index, but Index 0's overall block check is noticing it. We can't fix it, but we can throw a warning instead of reading corrupted data.
 ## The Hamming(16, 11) Code Implementation
 The core of this project is the implementation of the Extended Hamming(16, 11) code, which is designed for Single Error Correction and Double Error Detection (SECDEC). This means it can locate and fix a single-bit error or detect (but not fix) the presence of a two-bit error within a 16-bit block.
 
