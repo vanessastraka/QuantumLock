@@ -21,11 +21,13 @@ class MatrixHammingCoder:
         for i, bit in enumerate(message_bits):
             self.block[i] = bit
 
+        print("---------------------Message---------------------\n")
         print(f"Data is set and ready to go. Block is: {self.block}\n")
 
     def calculate_paritybits(self):
         """Set parity bits"""
         data_indices = [i for i in range(3, 16) if (i & (i - 1)) != 0]
+        print("\n---------------------Preparation---------------------\n")
         print(f"Indices that are not parity bits: {data_indices}\n")
 
         x = 0
@@ -53,7 +55,7 @@ class MatrixHammingCoder:
         2^15 = 32.768 possible 15-bit vectors
         2^11 = 2.048 of them are valid codewords
         """
-        print("Start Creation Generator Matrix G\n")
+        print("\n---------------------Phase 1: Start Creation Generator Matrix G---------------------\n")
         print("G =[I,P]\n")
         I = np.identity(11)
         print(f"Identity Matrix: \n{I}\n")
@@ -81,7 +83,7 @@ class MatrixHammingCoder:
 
     def encode(self, g):
         """encode message m into codeword c => c = m * G"""
-        print("Encode Message\n")
+        print("---------------------Encode Message---------------------\n")
         print("c = m * G\n")
 
         dot_product = np.dot(self.block, g)
@@ -109,7 +111,7 @@ class MatrixHammingCoder:
         H = [P^TE (5x11), IE(5x5)]
 
         """
-        print("Start Creation Parity-Check Matrix H\n")
+        print("---------------------Phase 2: Start Creation Parity-Check Matrix H---------------------\n")
         print("H =[P^T,I]\n")
         p_t = np.transpose(self.parity)
         print(f"Transposed Parity Matrix: \n{p_t}\n")
@@ -133,7 +135,7 @@ class MatrixHammingCoder:
 
     def check(self, H, c):
         """check if codeword c valid"""
-        print("Check Codeword\n")
+        print("---------------------Phase 3: Check Codeword---------------------\n")
         print("0 = H*c^T\n")
 
         print(f"Codeword:\n{c}\n")
@@ -183,7 +185,7 @@ class MatrixHammingCoder:
         decode codeword c into message m
         first 11 bits of c are the m if check is valid
         """
-        print("Decode Message")
+        print("---------------------Phase 4: Decode Message---------------------\n")
 
         if index > 0:
             c[index] = 1 - c[index]
