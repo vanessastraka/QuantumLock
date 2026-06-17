@@ -97,3 +97,10 @@ Each script is configured to encode a sample message, manually introduce an erro
             └── hammingCodeByMatrix.py
             └── README.md       # Explanation
 ```
+## Source
+* [Hamming Code by Hand](https://www.youtube.com/watch?v=X8jsijhllIA)
+* [Hamming Code "Binary XOR"](https://www.youtube.com/watch?v=b3NxrZOu_CE)
+* [Hamming Code "Binary XOR"](https://www.ece.unb.ca/tervo/ee4253/hamming.shtml) (Additional Explanation)
+* [Hamming Code by Matrix](https://www.youtube.com/watch?v=eixCGqdlGxQ&list=PLJHszsWbB6hqkOyFCQOAlQtfzC1G9sf2_&index=1)
+* [Hamming Code by Matrix](https://www.ece.unb.ca/tervo/ee4253/hamming2.shtml) (Additional Explanation)
+* [Hamming Code by Matrix](https://github.com/christiansiegel/coding-theory-algorithms/blob/master/LinearBlockCode.py) (Code Inspiration)
