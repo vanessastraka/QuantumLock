@@ -57,7 +57,7 @@ class SimpleHammingCoder:
         self.block[4] = self.calculate_q_bit(ROW2 + ROW4, "Q3")
         self.block[8] = self.calculate_q_bit(ROW3 + ROW4, "Q4")
 
-        print("\nPhase 2: Setting Special Bit (Index 0)")
+        print("\n---------------------Phase 2: Setting Special Bit (Index 0)---------------------\n")
         # sum everything from index 1 to 15
         total_data_sum = sum(self.block[1:])
         # check if uneven and add 1 if so
@@ -69,7 +69,7 @@ class SimpleHammingCoder:
 
     def verify(self, received_block):
         """Check code block => check if block is correct or not"""
-        print("\nPhase 3: Verifying Received Block")
+        print("\n---------------------Phase 3: Verifying Received Block---------------------\n")
         # receiving block
         self.block = received_block
 
