@@ -1,10 +1,9 @@
 # Hamming Code (16, 11) By Matrix
-Welcome to the third and final implementation: By Matrix. 
+Welcome to the third and final implementation: "By Matrix"
 
 This is the most abstract version of the project. 
 It directly connects the educational look at Hamming codes to the 
-high-level linear algebra concepts used in real-world Post-Quantum 
-Cryptography (PQC) systems (like the McEliece cryptosystem).
+high-level linear algebra concepts used in real-world PQC systems (like the McEliece cryptosystem).
 
 Instead of mapping out a physical 4x4 grid or running bitwise XOR loops 
 over active array indexes, we compress all our rules into two mathematical 
@@ -13,7 +12,7 @@ structures:
 * Parity-Check Matrix ($H$)
 
 Good to know for here: I use NumPy here to handle the heavy matrix math, 
-and everything is reduced modulo 2 ($\% \, 2$) because binary algebra lives 
+and everything is reduced modulo 2 (%2) because binary algebra lives 
 in a finite field where $1 + 1 = 0$.
 
 ## Parity Matrix (Preparation)

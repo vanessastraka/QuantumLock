@@ -1,5 +1,5 @@
 # Hamming Code (16, 11) By XOR
-Welcome to the By XOR implementation! In the previous "By Hand" method, I mapped out a literal 4x4 grid and used hardcoded arrays to check specific rows and columns. While that is great for learning on paper, a computer doesn't need to look at shapes.
+Welcome to the "By XOR" implementation! In the previous "By Hand" method, I mapped out a literal 4x4 grid and used hardcoded arrays to check specific rows and columns. While that is great for learning on paper, a computer doesn't need to look at shapes.
 
 Instead, this version evolves that manual logic into a highly efficient programmatic trick. I use a bit's binary "address" (its index location) and the XOR ```^``` operator to achieve the exact same error detection and correction.
 
@@ -38,7 +38,6 @@ When a block is received, verification is easier than before.
 Instead of asking four separate column/row questions, I use a single Python ```reduce``` function to instantly XOR the indices of all bits set to 1:
 ```Python
 # XOR every index that contains a 1
-# 'Syndrome': position of the error (if there is just one error)
 ones_indices = [i for i, bit in enumerate(received_block) if bit == 1]
 syndrome = reduce(lambda x, y: x ^ y, ones_indices, 0)
 ```
@@ -50,6 +49,6 @@ received_block[syndrome] = 1 - received_block[syndrome]
 ```
 
 ## Special: Compare to Brute Force
-I implemented a custom recursive Brute Force function to see how the system handles corrections mathematically.
+I implemented a custom recursive Brute Force function to see how the system handles corrections.
 * **Single Error Brute Force**: Systematically flips every bit one-by-one until the syndrome returns to 0. It successfully locates single errors every time.
 * **Double Error Brute Force**: If two bits are broken, the overall block parity stays Even, which signals a double error. While we know the data is corrupt, attempting a brute-force fix reveals a weakness in standard Hamming codes. Because the output is a False Positive.

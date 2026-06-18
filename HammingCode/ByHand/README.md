@@ -1,5 +1,5 @@
 # Hamming Code (16, 11) By Hand
-Welcome to the By Hand implementation. This part of the project replicates the classic, on-paper method of learning Hamming codes. Instead of starting with heavy linear algebra, I treat a 16-bit block of data as a simple 4x4 grid to find and fix errors.
+Welcome to the "By Hand" implementation. This part of the project replicates the classic, on-paper method of learning Hamming codes. Instead of starting with heavy linear algebra, I treat a 16-bit block of data as a simple 4x4 grid to find and fix errors.
 
 Good to know for now: how to count to 15, and the difference between even and odd numbers! :)
 ## The Start
