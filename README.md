@@ -38,9 +38,13 @@ If the Syndrome says there is an error, BUT Index 0 (Special bit) says the overa
 ## The Hamming(16, 11) Code Implementation
 This repository takes these concepts and implements the Extended Hamming(16, 11) code in three distinct ways, each building upon the last in terms of abstraction and efficiency:
 
-1. **By Hand (SimpleHammingCoder)**: Located in ```HammingCode/ByHand/```,  this logic mirrors the classic, on-paper method of learning Hamming codes. It treats the 16-bit block as a 4x4 grid and identifies errors by comparing specific columns and rows. By checking if the sum of certain areas is even or uneven, you can manually pinpoint an error at a specific coordinate. It’s highly intuitive and good for understanding the foundational logic.
-2. **By XOR (BinaryHammingCoder)**: Found in ```HammingCode/ByXOR/```, this version evolves the manual logic into a more efficient, programmatic form. Instead of hardcoding rows and columns, it uses the binary representation of the bit indices (Index 3 is 0011, Index 4 is 0100, etc.). By XORing the indices of all bits set to 1, we calculate the "Syndrome". This achieves the exact same result as the column/row checks but in a much more compact way, highlighting how a bit's binary "address" determines its role in parity.
-3. **By Matrix (MatrixHammingCoder)**: Located in ```HammingCode/ByMatrix/```, the concept becomes compact and powerful, directly connecting to the linear algebra principles used in real PQC. We still handle data bits and parity bits, but we compute them using matrix operations. In this setup, matrix multiplication acts as a "logical AND" and addition represents a "logical XOR".
+1. **By Hand**: Located in ```HammingCode/ByHand/```,  this logic mirrors the classic, on-paper method of learning Hamming codes. It treats the 16-bit block as a 4x4 grid and identifies errors by comparing specific columns and rows. By checking if the sum of certain areas is even or uneven, you can manually pinpoint an error at a specific coordinate. It’s highly intuitive and good for understanding the foundational logic.
+
+
+2. **By XOR**: Found in ```HammingCode/ByXOR/```, this version evolves the manual logic into a more efficient, programmatic form. Instead of hardcoding rows and columns, it uses the binary representation of the bit indices (Index 3 is 0011, Index 4 is 0100, etc.). By XORing the indices of all bits set to 1, we calculate the "Syndrome". This achieves the exact same result as the column/row checks but in a much more compact way, highlighting how a bit's binary "address" determines its role in parity.
+
+
+3. **By Matrix**: Located in ```HammingCode/ByMatrix/```, the concept becomes compact and powerful, directly connecting to the linear algebra principles used in real PQC. We still handle data bits and parity bits, but we compute them using matrix operations. In this setup, matrix multiplication acts as a "logical AND" and addition represents a "logical XOR".
    * **Generator Matrix (G):** Maps an 11-bit message to a 16-bit codeword ```(c = m * G)```.
    * **Parity-Check Matrix (H):** Verifies a codeword. For a valid codeword c, the product ```H * c^T``` results in a zero vector. Any non-zero result is the syndrome indicating the error's location.
 
